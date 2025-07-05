@@ -118,7 +118,7 @@ const TaskCreate = () => {
     };
 
     const handleCancel = () => {
-        navigate('/');
+        navigate('/dashboard');
     };
 
     return (

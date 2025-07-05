@@ -1,8 +1,9 @@
 import AuthForm from "../pages/AuthForm";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const SignupForm = () =>{
     const [error,setError] = useState(null);
+    const navigate = useNavigate();
     const handleSignup = async(formData)  =>{
         try{
             const response = await fetch("http://localhost:5000/api/auth/signup",{
@@ -21,6 +22,8 @@ const SignupForm = () =>{
                 throw new Error(errorData.message || "Signup failed");
             }
             const result = await response.json();
+            localStorage.setItem("token", result.token);
+            navigate("/dashboard");
             console.log(result);
         }catch(error){
             console.error("Signup failed:",error.message);
