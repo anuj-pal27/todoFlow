@@ -1,9 +1,13 @@
-import './TaskCreate.css';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
+import './TaskCreate.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const TaskCreate = () => {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -11,10 +15,6 @@ const TaskCreate = () => {
         status: 'Todo',
         priority: 'Medium',
     });
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [submitting, setSubmitting] = useState(false);
-    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -102,8 +102,8 @@ const TaskCreate = () => {
             });
             setErrors({});
             
-            // Navigate back to dashboard
-            navigate('/dashboard');
+            // Navigate back to home or dashboard
+            navigate('/');
             
         } catch (error) {
             console.error('Error creating task:', error);
@@ -118,33 +118,7 @@ const TaskCreate = () => {
     };
 
     const handleCancel = () => {
-        navigate('/dashboard');
-    };
-
-    const getPriorityColor = (priority) => {
-        switch (priority) {
-            case 'High':
-                return '#e74c3c';
-            case 'Medium':
-                return '#f39c12';
-            case 'Low':
-                return '#27ae60';
-            default:
-                return '#95a5a6';
-        }
-    };
-
-    const getStatusColor = (status) => {
-        switch (status) {
-            case 'Todo':
-                return '#ff6b6b';
-            case 'In Progress':
-                return '#4ecdc4';
-            case 'Done':
-                return '#45b7d1';
-            default:
-                return '#95a5a6';
-        }
+        navigate('/');
     };
 
     return (
@@ -222,42 +196,20 @@ const TaskCreate = () => {
                     <div className="form-row two-columns">
                         <div className="form-group">
                             <label htmlFor="status">Status</label>
-                            <div className="status-options">
-                                {['Todo', 'In Progress', 'Done'].map(status => (
-                                    <button
-                                        key={status}
-                                        type="button"
-                                        className={`status-option ${formData.status === status ? 'selected' : ''}`}
-                                        style={{ 
-                                            backgroundColor: formData.status === status ? getStatusColor(status) : 'transparent',
-                                            borderColor: getStatusColor(status)
-                                        }}
-                                        onClick={() => setFormData(prev => ({ ...prev, status }))}
-                                    >
-                                        {status}
-                                    </button>
-                                ))}
-                            </div>
+                            <select id="status" name="status" value={formData.status} onChange={handleChange}>
+                                <option value="Todo">Todo</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Done">Done</option>
+                            </select>
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="priority">Priority</label>
-                            <div className="priority-options">
-                                {['Low', 'Medium', 'High'].map(priority => (
-                                    <button
-                                        key={priority}
-                                        type="button"
-                                        className={`priority-option ${formData.priority === priority ? 'selected' : ''}`}
-                                        style={{ 
-                                            backgroundColor: formData.priority === priority ? getPriorityColor(priority) : 'transparent',
-                                            borderColor: getPriorityColor(priority)
-                                        }}
-                                        onClick={() => setFormData(prev => ({ ...prev, priority }))}
-                                    >
-                                        {priority}
-                                    </button>
-                                ))}
-                            </div>
+                            <select id="priority" name="priority" value={formData.priority} onChange={handleChange}>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
                         </div>
                     </div>
 
