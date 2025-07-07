@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const actionLogSchema = new mongoose.Schema({
     actionType:{
         type: String,
-        enum:['CREATE','UPDATE','DELETE','ASSIGN','STATUS_CHANGE','PRIORITY_CHANGE','DRAG_DROP'],
+        enum:['CREATE','UPDATE','DELETE','ASSIGN','STATUS_CHANGE','PRIORITY_CHANGE','DRAG_DROP','SMART_ASSIGN'],
         required:true,
     },
     taskId:{

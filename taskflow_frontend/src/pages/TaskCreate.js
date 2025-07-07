@@ -46,11 +46,7 @@ const TaskCreate = () => {
         } else if (formData.description.trim().length < 10) {
             newErrors.description = 'Description must be at least 10 characters';
         }
-        
-        if (!formData.assignee) {
-            newErrors.assignee = 'Please select an assignee';
-        }
-        
+        // No assignee validation
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -82,7 +78,13 @@ const TaskCreate = () => {
                 return;
             }
 
-            const response = await axios.post('http://localhost:5000/api/tasks', formData, {
+            // Only include assignee if not blank
+            const payload = { ...formData };
+            if (!payload.assignee) {
+                delete payload.assignee;
+            }
+
+            const response = await axios.post('http://localhost:5000/api/tasks', payload, {
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json'
@@ -103,7 +105,7 @@ const TaskCreate = () => {
             setErrors({});
             
             // Navigate back to home or dashboard
-            navigate('/');
+            navigate('/dashboard');
             
         } catch (error) {
             console.error('Error creating task:', error);
@@ -169,7 +171,7 @@ const TaskCreate = () => {
                     <div className="form-row">
                         <div className="form-group">
                             <label htmlFor="assignee">
-                                Assignee <span className="required">*</span>
+                                Assignee
                             </label>
                             <select 
                                 id="assignee" 
@@ -178,7 +180,7 @@ const TaskCreate = () => {
                                 onChange={handleChange}
                                 className={errors.assignee ? 'error' : ''}
                             >
-                                <option value="">Select Assignee</option>
+                                <option value="">None (Unassigned)</option>
                                 {loading ? (
                                     <option value="" disabled>Loading users...</option>
                                 ) : (

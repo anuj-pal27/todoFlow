@@ -7,6 +7,7 @@ import SignupForm from './components/SignupForm';
 import TaskCreate from './pages/TaskCreate';
 import Dashboard from './pages/Dashboard';
 import ActionLog from './pages/ActionLog';
+import SmartAssign from './components/SmartAssign';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='/create' element={<TaskCreate />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/action' element={<ActionLog />} />
+          <Route path='/smart-assign' element={<SmartAssign />} />
         </Routes>
 
   );

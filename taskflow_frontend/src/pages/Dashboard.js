@@ -88,6 +88,10 @@ const Dashboard = () => {
     const handleActionLog = () =>{
         navigate('/action');
     };
+
+    const handleSmartAssign = () =>{
+        navigate('/smart-assign');
+    };
         
     if (isLoading) {
         return (
@@ -113,6 +117,7 @@ const Dashboard = () => {
             <div className="dashboard-header">
                 <h1>Task Dashboard</h1>
                 <div className="dashboard-actions">
+                    <button className= "smart-assign-btn" onClick = {handleSmartAssign}>Smart Assign</button>
                     <button className="action-log-btn" onClick={handleActionLog}>Action Log</button>
                     <button className="create-task-btn" onClick={handleCreateTask}>
                         + Create Task

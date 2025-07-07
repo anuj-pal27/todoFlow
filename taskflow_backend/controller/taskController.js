@@ -6,7 +6,7 @@ const ActionLog = require('../model/actionLog');
 const createTask = async (req,res) =>{
     try{
         const {title,description,assignee,status,priority} = req.body;
-        if(!title || !description || !assignee || !status || !priority){
+        if(!title || !description  || !status || !priority){
             return res.status(400).json({message:"All fields are required"});
         }
         const task = await Task.create({
@@ -112,10 +112,88 @@ const deleteTask = async(req,res) =>{
     }
 }
 
+const smartAssign = async(req,res) =>{
+    try{
+        const taskId = req.params.id;
+        const task = await Task.findById(taskId);
+        
+        if(!task){
+            return res.status(404).json({message:"Task not found"});
+        }
+
+        // Check if task already has an assignee
+        if(task.assignee){
+            return res.status(400).json({message:"Task is already assigned to a user"});
+        }
+
+        // Get all users
+        const users = await User.find({});
+        
+        if(users.length === 0){
+            return res.status(404).json({message:"No users found in the system"});
+        }
+        
+        // Count active tasks for each user
+        const userTaskCounts = [];
+        
+        for(const user of users){
+            const activeTasks = await Task.countDocuments({
+                assignee: user._id,
+                status: { $ne: 'Done' }
+            });
+            
+            userTaskCounts.push({
+                userId: user._id,
+                username: user.username,
+                taskCount: activeTasks
+            });
+        }
+        
+        // Sort by task count (ascending) to find user with least tasks
+        userTaskCounts.sort((a, b) => a.taskCount - b.taskCount);
+        
+        const bestUser = userTaskCounts[0];
+        
+        // Update the task with the new assignee
+        task.assignee = bestUser.userId;
+        task.version = task.version + 1;
+        task.updatedAt = new Date();
+        await task.save();
+        
+        // Log the action
+        await ActionLog.create({
+            actionType: 'SMART_ASSIGN',
+            taskId: task._id,
+            performedBy: req.user.id,
+            details: {
+                title: task.title,
+                previousAssignee: null,
+                newAssignee: bestUser.username,
+                reason: `Auto-assigned to ${bestUser.username} (${bestUser.taskCount} active tasks)`
+            }
+        });
+        
+        res.status(200).json({
+            message: "Task smart assigned successfully",
+            task: await Task.findById(taskId).populate('assignee', 'username'),
+            assignmentDetails: {
+                assignedTo: bestUser.username,
+                activeTaskCount: bestUser.taskCount,
+                allUserCounts: userTaskCounts
+            }
+        });
+        
+    }catch(error){
+        console.error('Smart Assign Error:', error);
+        res.status(500).json({message:"Internal server error",error:error.message});
+    }
+}
+
 module.exports = {
     createTask,
     getTasks,
     getTaskById,
     updateTask,
     deleteTask,
+    smartAssign,
 }
