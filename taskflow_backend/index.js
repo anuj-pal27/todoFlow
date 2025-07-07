@@ -13,7 +13,7 @@ app.use(cors());
 
 app.use('/api/auth',authRoutes);
 app.use('/api/tasks',taskRoutes);
-app.use('/api/actions',actionRoutes);
+app.use('/api/action',actionRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on port ${process.env.PORT}`);

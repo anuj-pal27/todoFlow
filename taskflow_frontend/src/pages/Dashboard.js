@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axios from 'axios';
 import './Dashboard.css';
+import DeleteButton from '../components/DeleteButton';
 
 const statusColumns = ["Todo", "In Progress", "Done"];
 
@@ -83,6 +84,10 @@ const Dashboard = () => {
         localStorage.removeItem('token');
         navigate('/login');
     };
+
+    const handleActionLog = () =>{
+        navigate('/action');
+    };
         
     if (isLoading) {
         return (
@@ -108,6 +113,7 @@ const Dashboard = () => {
             <div className="dashboard-header">
                 <h1>Task Dashboard</h1>
                 <div className="dashboard-actions">
+                    <button className="action-log-btn" onClick={handleActionLog}>Action Log</button>
                     <button className="create-task-btn" onClick={handleCreateTask}>
                         + Create Task
                     </button>
@@ -149,6 +155,9 @@ const Dashboard = () => {
                                                                 </span>
                                                                 <span className="task-priority">{task.priority}</span>
                                                             </div>
+                                                            <DeleteButton taskId={task._id} onDelete={() => {
+                                                                setTasks(prev => prev.filter(t => t._id !== task._id));
+                                                            }} />
                                                         </div>
                                                     )}
                                                 </Draggable>

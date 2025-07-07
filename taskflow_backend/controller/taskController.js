@@ -19,7 +19,7 @@ const createTask = async (req,res) =>{
         await ActionLog.create({
             actionType:'CREATE',
             taskId:task._id,
-            performedBy:req.user._id,
+            performedBy:req.user.id,
             details:{
                 title:task.title,
             }
@@ -71,7 +71,7 @@ const updateTask = async(req,res) =>{
         await ActionLog.create({
             actionType:'UPDATE',
             taskId:task._id,
-            performedBy:req.user._id,
+            performedBy:req.user.id,
             details:{
                 title:task.title,
                 description:task.description,
@@ -97,7 +97,7 @@ const deleteTask = async(req,res) =>{
         await ActionLog.create({
             actionType:'DELETE',
             taskId:task._id,
-            performedBy:req.user._id,
+            performedBy:req.user.id,
             details:{
                 title:task.title,
                 description:task.description,

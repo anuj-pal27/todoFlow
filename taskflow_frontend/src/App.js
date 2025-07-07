@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 import TaskCreate from './pages/TaskCreate';
 import Dashboard from './pages/Dashboard';
+import ActionLog from './pages/ActionLog';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path='/signup' element={<SignupForm />} />
           <Route path='/create' element={<TaskCreate />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/action' element={<ActionLog />} />
         </Routes>
 
   );

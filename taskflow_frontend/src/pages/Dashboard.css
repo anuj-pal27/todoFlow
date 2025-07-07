@@ -23,6 +23,14 @@
     gap: 10px;
 }
 
+.action-log-btn{
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .create-task-btn {
     background: #007bff;
     color: white;
@@ -40,7 +48,15 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
+.delete-btn{
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
 .kanban-board {
     display: flex;
     gap: 20px;
