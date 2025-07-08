@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import './ActivityLogSidebar.css';
+import { FaRegListAlt } from 'react-icons/fa';
 
 const MAX_LOGS = 20;
 
@@ -65,36 +66,52 @@ const ActivityLogSidebar = ({ ws }) => {
   }, [ws]);
 
   return (
-    <div className="activity-log-sidebar">
-      <h2>Activity Log</h2>
-      {loading ? (
-        <div className="activity-log-loading"><div className="spinner"></div>Loading...</div>
-      ) : error ? (
-        <div className="activity-log-error">{error}</div>
-      ) : logs.length === 0 ? (
-        <div className="activity-log-empty">No recent activity.</div>
-      ) : (
-        <table className="activity-log-table">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>User</th>
-              <th>Time</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {logs.map((log) => (
-              <tr key={log._id || Math.random()}>
-                <td className="type">{log.actionType}</td>
-                <td className="user">{log.performedBy?.username || 'Unknown'}</td>
-                <td className="time">{formatTimestamp(log.timestamp)}</td>
-                <td className="details">{formatDetails(log.details)}</td>
+    <div className="activity-log-sidebar" role="complementary" aria-label="Activity Log Sidebar">
+      <h2><FaRegListAlt style={{ marginRight: 6, fontSize: 20, color: '#007bff' }} aria-hidden="true" />Activity Log</h2>
+      <div className="activity-log-header-divider" />
+      <div className="activity-log-content">
+        {loading ? (
+          <div className="activity-log-loading"><div className="spinner"></div>Loading...</div>
+        ) : error ? (
+          <div className="activity-log-error">{error}</div>
+        ) : logs.length === 0 ? (
+          <div className="activity-log-empty">No recent activity.</div>
+        ) : (
+          <table className="activity-log-table">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>User</th>
+                <th>Time</th>
+                <th>Details</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {logs.map((log) => {
+                const detailsStr = formatDetails(log.details);
+                const isTruncated = detailsStr.length > 32;
+                return (
+                  <tr key={log._id || Math.random()}>
+                    <td className="type">
+                      <span className={`type-badge ${log.actionType}`}>{log.actionType}</span>
+                    </td>
+                    <td className="user">{log.performedBy?.username || 'Unknown'}</td>
+                    <td className="time">{formatTimestamp(log.timestamp)}</td>
+                    <td className="details" tabIndex={0} aria-label={detailsStr} title={isTruncated ? detailsStr : undefined}>
+                      {isTruncated ? (
+                        <>
+                          {detailsStr.slice(0, 32)}... 
+                          <span className="details-tooltip">{detailsStr}</span>
+                        </>
+                      ) : detailsStr}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

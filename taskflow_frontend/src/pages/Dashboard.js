@@ -123,8 +123,8 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="dashboard" style={{ display: 'flex', flexDirection: 'row' }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="dashboard dashboard-root">
+            <div className="dashboard-main">
                 <div className="dashboard-header">
                     <h1>Task Dashboard</h1>
                     <div className="dashboard-actions">
@@ -166,20 +166,23 @@ const Dashboard = () => {
                                                                 <p className="task-description">{task.description}</p>
                                                                 <div className="task-footer">
                                                                     <span className="task-assignee">
-                                                                        Assigned to: {task.assignee?.username || 'Unassigned'}
+                                                                        <span role="img" aria-label="assignee">👤</span> {task.assignee?.username || 'Unassigned'}
                                                                     </span>
-                                                                    <span className="task-priority">{task.priority}</span>
+                                                                    <span className={`task-priority ${task.priority}`}>{task.priority}</span>
                                                                 </div>
-                                                                <DeleteButton taskId={task._id} onDelete={() => {
-                                                                    setTasks(prev => prev.filter(t => t._id !== task._id));
-                                                                }} />
-                                                                <button
-                                                                    className="edit-btn"
-                                                                    onClick={() => navigate(`/tasks/${task._id}/edit`)}
-                                                                    style={{ marginRight: '8px' }}
-                                                                >
-                                                                    Edit
-                                                                </button>
+                                                                <div style={{ display: 'flex', gap: '4px', marginTop: '6px' }}>
+                                                                    <button
+                                                                        className="edit-btn"
+                                                                        aria-label="Edit Task"
+                                                                        title="Edit Task"
+                                                                        onClick={() => navigate(`/tasks/${task._id}/edit`)}
+                                                                    >
+                                                                        ✏️ Edit
+                                                                    </button>
+                                                                    <DeleteButton taskId={task._id} onDelete={() => {
+                                                                        setTasks(prev => prev.filter(t => t._id !== task._id));
+                                                                    }} />
+                                                                </div>
                                                             </div>
                                                         )}
                                                     </Draggable>
