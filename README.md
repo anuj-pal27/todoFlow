@@ -114,7 +114,7 @@ npm start or npm run start
 ---
 
 ## 🌐 Live App
-[Deployed App](#) <!-- Replace # with your live app URL -->
+https://todo-flow-two.vercel.app/ <!-- Replace # with your live app URL -->
 
 ## 🎥 Demo Video
 [Watch Demo](#) <!-- Replace # with your demo video link -->
@@ -123,3 +123,44 @@ npm start or npm run start
 
 ## 📄 License
 MIT 
+
+## Environment Variables Setup
+
+### Backend (`todoflow_backend/.env`)
+Create a `.env` file in your `todoflow_backend` directory with the following variables:
+
+```
+MONGO_URI=your_mongodb_connection_string
+PORT=5000 # or any port you want the backend to run on
+JWT_SECRET=your_jwt_secret_key
+FRONTEND_URL=http://localhost:3000 # or your deployed frontend URL
+WS_PORT=8080 # or any port for WebSocket server
+```
+
+**Descriptions:**
+- `MONGO_URI`: MongoDB connection string (get from your MongoDB provider or local setup)
+- `PORT`: Port for the Express backend server
+- `JWT_SECRET`: Secret key for signing JWT tokens (choose a strong, random value)
+- `FRONTEND_URL`: URL where your frontend is hosted (used for CORS)
+- `WS_PORT`: Port for the WebSocket server
+
+---
+
+### Frontend (`todoflow_frontend/.env`)
+Create a `.env` file in your `todoflow_frontend` directory with the following variables:
+
+```
+REACT_APP_BACKEND_URL=http://localhost:5000 # or your deployed backend URL
+REACT_APP_WS_URL=ws://localhost:8080 # or your deployed WebSocket URL
+```
+
+**Descriptions:**
+- `REACT_APP_BACKEND_URL`: URL of your backend API (must match the backend's `PORT` and deployment address)
+- `REACT_APP_WS_URL`: WebSocket server URL (must match the backend's `WS_PORT` and deployment address)
+
+---
+
+**Note:**
+- Never commit your `.env` files or secrets to version control.
+- For production, use secure, unique values for all secrets and connection strings.
+- If deploying, update these URLs to match your production domains and ports. 
