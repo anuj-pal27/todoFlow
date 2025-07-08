@@ -1,6 +1,6 @@
 
 const Navbar = () => {
-    return (
+    return(
         <div>
             <div>
                 <img src={logo} alt="logo" />
