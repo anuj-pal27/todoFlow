@@ -36,7 +36,6 @@ const login = async(req,res)=>{
         username:user.username,
     }
     const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"1h"});
-    console.log("Token generated:", token);
     res.cookie('token',token,{httpOnly:true,secure:true,maxAge:3600000});
     return res.status(200).json({message:"Login successful",token});
 }
