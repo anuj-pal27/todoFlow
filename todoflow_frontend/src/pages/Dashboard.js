@@ -16,7 +16,7 @@ const Dashboard = () => {
     const [ws, setWs] = useState(null);
 
     useEffect(() => {
-        const socket = new window.WebSocket(`${process.env.REACT_APP_WS_URL}`);
+        const socket = new window.WebSocket('ws://localhost:8080');
         setWs(socket);
         return () => {
             socket.close();
@@ -32,7 +32,7 @@ const Dashboard = () => {
                 return;
             }
             try {
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, {
+                const response = await axios.get('http://localhost:5000/api/tasks', {
                     headers: {
                         'Authorization': token,
                     }
@@ -68,7 +68,7 @@ const Dashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const res = await axios.put(
-                    `${process.env.REACT_APP_BACKEND_URL}/api/tasks/${draggableId}`, 
+                `http://localhost:5000/api/tasks/${draggableId}`, 
                 { ...updateTask, version: movedTask.version },
                 {
                     headers: {

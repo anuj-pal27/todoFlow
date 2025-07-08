@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const wss = new websocket.Server({ port: process.env.WS_PORT });
+const wss = new websocket.Server( { port: process.env.WS_PORT || 8080 } );
 
 wss.on('connection', (ws) => {
     console.log('New client connected');
