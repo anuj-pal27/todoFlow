@@ -8,6 +8,7 @@ import TaskCreate from './pages/TaskCreate';
 import Dashboard from './pages/Dashboard';
 import ActionLog from './pages/ActionLog';
 import SmartAssign from './components/SmartAssign';
+import TaskEdit from './pages/TaskEdit';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/action' element={<ActionLog />} />
           <Route path='/smart-assign' element={<SmartAssign />} />
+          <Route path='/tasks/:id/edit' element={<TaskEdit />} />
         </Routes>
 
   );

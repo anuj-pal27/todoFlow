@@ -173,6 +173,13 @@ const Dashboard = () => {
                                                                 <DeleteButton taskId={task._id} onDelete={() => {
                                                                     setTasks(prev => prev.filter(t => t._id !== task._id));
                                                                 }} />
+                                                                <button
+                                                                    className="edit-btn"
+                                                                    onClick={() => navigate(`/tasks/${task._id}/edit`)}
+                                                                    style={{ marginRight: '8px' }}
+                                                                >
+                                                                    Edit
+                                                                </button>
                                                             </div>
                                                         )}
                                                     </Draggable>
