@@ -1,7 +1,7 @@
 const Task = require('../model/task');
 const User = require('../model/user');
 const ActionLog = require('../model/actionLog');
-
+const { broadcastMessage, broadcastActionLog } = require('../wsServer');
 
 const createTask = async (req,res) =>{
     try{
@@ -16,7 +16,7 @@ const createTask = async (req,res) =>{
             status,
             priority,
         });
-        await ActionLog.create({
+        const actionLog = await ActionLog.create({
             actionType:'CREATE',
             taskId:task._id,
             performedBy:req.user.id,
@@ -24,8 +24,14 @@ const createTask = async (req,res) =>{
                 title:task.title,
             }
         })
+        broadcastActionLog(await ActionLog.findById(actionLog._id).populate('performedBy','username'));
+        broadcastMessage({
+            type:'TASK_CREATE',
+            task:task
+        })
         res.status(201).json({message:"Task created successfully",task});
     }catch(error){
+        console.error('Create Task Error:', error); // Log full error
         res.status(500).json({message:"Internal server error",error:error.message});
     }
 }
@@ -68,7 +74,7 @@ const updateTask = async(req,res) =>{
             updatedAt: new Date()
           });
         await task.save();
-        await ActionLog.create({
+        const actionLog = await ActionLog.create({
             actionType:'UPDATE',
             taskId:task._id,
             performedBy:req.user.id,
@@ -80,8 +86,14 @@ const updateTask = async(req,res) =>{
                 priority:task.priority,
             }
         })
+        broadcastActionLog(await ActionLog.findById(actionLog._id).populate('performedBy','username'));
+        broadcastMessage({
+            type:'TASK_UPDATE',
+            task:task
+        })
         res.status(200).json({message:"Task updated successfully",task});
     }catch(error){
+        console.error('Update Task Error:', error); // Log full error
         res.status(500).json({message:"Internal server error",error:error.message});
     }
 }
@@ -94,7 +106,7 @@ const deleteTask = async(req,res) =>{
             return res.status(404).json({message:"Task not found"});
         }
         await Task.findByIdAndDelete(id);
-        await ActionLog.create({
+        const actionLog = await ActionLog.create({
             actionType:'DELETE',
             taskId:task._id,
             performedBy:req.user.id,
@@ -106,8 +118,14 @@ const deleteTask = async(req,res) =>{
                 priority:task.priority,
             }
         })
+        broadcastActionLog(await ActionLog.findById(actionLog._id).populate('performedBy','username'));
+        broadcastMessage({
+            type:'TASK_DELETE',
+            task:task
+        })
         res.status(200).json({message:"Task deleted successfully"});
     }catch(error){
+        console.error('Delete Task Error:', error); // Log full error
         res.status(500).json({message:"Internal server error",error:error.message});
     }
 }
@@ -161,7 +179,7 @@ const smartAssign = async(req,res) =>{
         await task.save();
         
         // Log the action
-        await ActionLog.create({
+        const actionLog = await ActionLog.create({
             actionType: 'SMART_ASSIGN',
             taskId: task._id,
             performedBy: req.user.id,
@@ -172,6 +190,11 @@ const smartAssign = async(req,res) =>{
                 reason: `Auto-assigned to ${bestUser.username} (${bestUser.taskCount} active tasks)`
             }
         });
+        broadcastActionLog(await ActionLog.findById(actionLog._id).populate('performedBy','username'));
+        broadcastMessage({
+            type:'TASK_SMART_ASSIGN',
+            task:task
+        })
         
         res.status(200).json({
             message: "Task smart assigned successfully",
@@ -184,7 +207,7 @@ const smartAssign = async(req,res) =>{
         });
         
     }catch(error){
-        console.error('Smart Assign Error:', error);
+        console.error('Smart Assign Error:', error); // Already present
         res.status(500).json({message:"Internal server error",error:error.message});
     }
 }

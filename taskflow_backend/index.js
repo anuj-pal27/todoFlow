@@ -5,11 +5,14 @@ const connectDB = require('./db/db');
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const actionRoutes = require('./routes/actionRoutes');
+const dotenv = require('dotenv');
+dotenv.config();
+
 connectDB();
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
-
 
 app.use('/api/auth',authRoutes);
 app.use('/api/tasks',taskRoutes);

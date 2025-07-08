@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import axios from 'axios';
 import './Dashboard.css';
 import DeleteButton from '../components/DeleteButton';
+import ActivityLogSidebar from '../components/ActivityLogSidebar';
 
 const statusColumns = ["Todo", "In Progress", "Done"];
 
@@ -12,6 +13,15 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [ws, setWs] = useState(null);
+
+    useEffect(() => {
+        const socket = new window.WebSocket('ws://localhost:8080');
+        setWs(socket);
+        return () => {
+            socket.close();
+        };
+    }, []);
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -113,68 +123,70 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="dashboard">
-            <div className="dashboard-header">
-                <h1>Task Dashboard</h1>
-                <div className="dashboard-actions">
-                    <button className= "smart-assign-btn" onClick = {handleSmartAssign}>Smart Assign</button>
-                    <button className="action-log-btn" onClick={handleActionLog}>Action Log</button>
-                    <button className="create-task-btn" onClick={handleCreateTask}>
-                        + Create Task
-                    </button>
-                    <button className="logout-btn" onClick={handleLogout}>
-                        Logout
-                    </button>
+        <div className="dashboard" style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="dashboard-header">
+                    <h1>Task Dashboard</h1>
+                    <div className="dashboard-actions">
+                        <button className= "smart-assign-btn" onClick = {handleSmartAssign}>Smart Assign</button>
+                        <button className="action-log-btn" onClick={handleActionLog}>Action Log</button>
+                        <button className="create-task-btn" onClick={handleCreateTask}>
+                            + Create Task
+                        </button>
+                        <button className="logout-btn" onClick={handleLogout}>
+                            Logout
+                        </button>
+                    </div>
                 </div>
-            </div>
-
-            <DragDropContext onDragEnd={onDragEnd}>
-                <div className="kanban-board">
-                    {statusColumns.map(status => (
-                        <Droppable droppableId={status} key={status}>
-                            {(provided) => (
-                                <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className="kanban-column"
-                                >
-                                    <h3 className="column-header">{status}</h3>
-                                    <div className="column-content">
-                                        {tasks
-                                            .filter(task => task.status === status)
-                                            .map((task, index) => (
-                                                <Draggable key={task._id} draggableId={task._id} index={index}>
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className="task-card"
-                                                            style={provided.draggableProps.style}
-                                                        >
-                                                            <h4 className="task-title">{task.title}</h4>
-                                                            <p className="task-description">{task.description}</p>
-                                                            <div className="task-footer">
-                                                                <span className="task-assignee">
-                                                                    Assigned to: {task.assignee?.username || 'Unassigned'}
-                                                                </span>
-                                                                <span className="task-priority">{task.priority}</span>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    <div className="kanban-board">
+                        {statusColumns.map(status => (
+                            <Droppable droppableId={status} key={status}>
+                                {(provided) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                        className="kanban-column"
+                                    >
+                                        <h3 className="column-header">{status}</h3>
+                                        <div className="column-content">
+                                            {tasks
+                                                .filter(task => task.status === status)
+                                                .map((task, index) => (
+                                                    <Draggable key={task._id} draggableId={task._id} index={index}>
+                                                        {(provided) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className="task-card"
+                                                                style={provided.draggableProps.style}
+                                                            >
+                                                                <h4 className="task-title">{task.title}</h4>
+                                                                <p className="task-description">{task.description}</p>
+                                                                <div className="task-footer">
+                                                                    <span className="task-assignee">
+                                                                        Assigned to: {task.assignee?.username || 'Unassigned'}
+                                                                    </span>
+                                                                    <span className="task-priority">{task.priority}</span>
+                                                                </div>
+                                                                <DeleteButton taskId={task._id} onDelete={() => {
+                                                                    setTasks(prev => prev.filter(t => t._id !== task._id));
+                                                                }} />
                                                             </div>
-                                                            <DeleteButton taskId={task._id} onDelete={() => {
-                                                                setTasks(prev => prev.filter(t => t._id !== task._id));
-                                                            }} />
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                        {provided.placeholder}
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </Droppable>
-                    ))}
-                </div>
-            </DragDropContext>
+                                )}
+                            </Droppable>
+                        ))}
+                    </div>
+                </DragDropContext>
+            </div>
+            <ActivityLogSidebar ws={ws} />
         </div>
     );
 };

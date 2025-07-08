@@ -1,0 +1,88 @@
+.activity-log-sidebar {
+  width: 340px;
+  background: #fff;
+  border-left: 1px solid #eee;
+  padding: 20px 10px 20px 20px;
+  box-shadow: -2px 0 8px rgba(0,0,0,0.03);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-log-sidebar h2 {
+  font-size: 1.3rem;
+  margin-bottom: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.activity-log-loading, .activity-log-error, .activity-log-empty {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+}
+
+.activity-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #fafbfc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.activity-log-table th, .activity-log-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.activity-log-table th {
+  background: #f3f6fa;
+  color: #555;
+  font-weight: 600;
+}
+
+.activity-log-table tr:last-child td {
+  border-bottom: none;
+}
+
+.activity-log-table .type {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.activity-log-table .user {
+  color: #28a745;
+}
+
+.activity-log-table .time {
+  color: #888;
+  font-size: 12px;
+}
+
+.activity-log-table .details {
+  color: #444;
+  max-width: 120px;
+  word-break: break-word;
+}
+
+.activity-log-sidebar {
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} 
