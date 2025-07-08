@@ -18,7 +18,7 @@ const ActionLog = () => {
                 return;
             }
             try {
-                const response = await fetch('http://localhost:5000/api/action', {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/action`, {
                     headers: {
                         'Authorization': token,
                     }
@@ -43,7 +43,7 @@ const ActionLog = () => {
                 navigate('/login');
                 return;
             }
-            const response = await axios.delete('http://localhost:5000/api/action', {
+            const response = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/action`, {
                 headers: {
                     'Authorization': token,
                 },

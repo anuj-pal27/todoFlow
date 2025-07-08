@@ -24,7 +24,7 @@ const SmartAssign = () => {
         }
 
         try {
-            const response = await axios.get('http://localhost:5000/api/tasks', {
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, {
                 headers: {
                     'Authorization': token,
                 }
@@ -52,7 +52,7 @@ const SmartAssign = () => {
         setAssignmentResult(null);
 
         try {
-            const response = await axios.get(`http://localhost:5000/api/tasks/${taskId}/smart-assign`, {
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/tasks/${taskId}/smart-assign`, {
                 headers: {
                     'Authorization': token,
                 }

@@ -28,7 +28,7 @@ const TaskEdit = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/auth/users');
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/auth/users`);
             setUsers(response.data);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -43,7 +43,7 @@ const TaskEdit = () => {
                 navigate('/login');
                 return;
             }
-            const response = await axios.get(`http://localhost:5000/api/tasks/${id}`, {
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/tasks/${id}`, {
                 headers: { 'Authorization': token }
             });
             const task = response.data;
@@ -105,7 +105,7 @@ const TaskEdit = () => {
                 delete payload.assignee;
             }
             const { version, ...updatePayload } = payload;
-            const response = await axios.put(`http://localhost:5000/api/tasks/${id}`, { ...updatePayload, version }, {
+            const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/tasks/${id}`, { ...updatePayload, version }, {
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json'
@@ -145,7 +145,7 @@ const TaskEdit = () => {
                 delete payload.assignee;
             }
             const { version, ...updatePayload } = payload;
-            await axios.put(`http://localhost:5000/api/tasks/${id}`, { ...updatePayload, version }, {
+            await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/tasks/${id}`, { ...updatePayload, version }, {
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json'

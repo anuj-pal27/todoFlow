@@ -34,7 +34,7 @@ const ActivityLogSidebar = ({ ws }) => {
     const fetchLogs = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/action', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/action`, {
           headers: { Authorization: token },
         });
         setLogs(response.data.slice(0, MAX_LOGS));

@@ -23,7 +23,7 @@ const TaskCreate = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/auth/users');
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/auth/users`);
             setUsers(response.data);
             setLoading(false);
         } catch (error) {
@@ -84,7 +84,7 @@ const TaskCreate = () => {
                 delete payload.assignee;
             }
 
-            const response = await axios.post('http://localhost:5000/api/tasks', payload, {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, payload, {
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json'
