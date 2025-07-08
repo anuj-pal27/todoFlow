@@ -1,6 +1,6 @@
 
 import './App.css';
-import {Routes,Route} from 'react-router-dom';
+import {Routes,Route,Navigate} from 'react-router-dom';
 
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
@@ -14,6 +14,11 @@ function App() {
   return (
 
         <Routes>
+          <Route path="/" element={
+            localStorage.getItem('token')
+              ? <Navigate to="/dashboard" replace />
+              : <Navigate to="/login" replace />
+          } />
           <Route path='/login' element={<LoginForm />} />
           <Route path='/signup' element={<SignupForm />} />
           <Route path='/create' element={<TaskCreate />} />
