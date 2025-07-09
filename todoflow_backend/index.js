@@ -23,4 +23,8 @@ app.use('/api/action',actionRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on port ${process.env.PORT}`);
-})
+});
+
+// Start WebSocket server
+require('./wsServer');
+console.log(`WebSocket server is running on port ${process.env.WS_PORT || 8080}`);
