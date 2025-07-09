@@ -1,0 +1,248 @@
+.task-create-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.task-create-header h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.task-create-header p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.required {
+    color: red;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.error {
+    border-color: red !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.submit-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cancel-btn:hover,
+.submit-btn:hover {
+    opacity: 0.8;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: #333;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+.edit-btn:hover:not(:disabled) {
+    background: #e0a800;
+}
+.edit-btn:disabled {
+    background: #e9ecef;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.conflict-versions {
+    display: flex;
+    gap: 32px;
+    margin: 32px 0 24px 0;
+    justify-content: center;
+}
+.conflict-version {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px 28px;
+    min-width: 260px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.conflict-version h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+.conflict-version ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.conflict-version li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+.conflict-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+@media (max-width: 600px) {
+  .task-create-container {
+    max-width: 98vw;
+    margin: 10px auto;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .task-create-header h1 {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+  .task-create-header p {
+    font-size: 0.98rem;
+    margin-bottom: 16px;
+  }
+  .form-row, .form-group {
+    margin-bottom: 10px;
+  }
+  .form-group label {
+    font-size: 0.98rem;
+    margin-bottom: 3px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 13px;
+    padding: 7px;
+    border-radius: 4px;
+  }
+  .two-columns {
+    display: block;
+  }
+  .form-actions {
+    margin-top: 16px;
+  }
+  .cancel-btn, .submit-btn, .edit-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-right: 6px;
+    margin-top: 6px;
+  }
+  .conflict-versions {
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0 12px 0;
+    align-items: stretch;
+  }
+  .conflict-version {
+    min-width: 0;
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+  .conflict-version h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .conflict-version li {
+    font-size: 13px;
+  }
+  .conflict-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+}
+
