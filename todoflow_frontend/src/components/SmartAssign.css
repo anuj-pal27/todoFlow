@@ -345,3 +345,92 @@
         align-items: stretch;
     }
 } 
+
+@media (max-width: 600px) {
+  .smart-assign {
+    max-width: 98vw;
+    padding: 8px;
+  }
+  .smart-assign-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  .smart-assign-header h1 {
+    font-size: 1.3rem;
+  }
+  .back-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+  .smart-assign-content {
+    padding: 10px;
+    border-radius: 8px;
+  }
+  .info-section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+  .info-section p {
+    font-size: 13px;
+  }
+  .tasks-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .task-card {
+    padding: 10px 6px;
+    font-size: 13px;
+  }
+  .task-header {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .task-title {
+    font-size: 1rem;
+  }
+  .priority-badge {
+    font-size: 11px;
+    padding: 3px 7px;
+  }
+  .task-description {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .task-footer {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+    font-size: 12px;
+  }
+  .smart-assign-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+  .assignment-result {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  .assignment-details p, .user-counts li {
+    font-size: 12px;
+  }
+  .user-counts h4 {
+    font-size: 1rem;
+  }
+  .no-tasks {
+    padding: 20px 4px;
+  }
+  .no-tasks h3 {
+    font-size: 1.1rem;
+  }
+  .no-tasks button {
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 6px;
+  }
+} 

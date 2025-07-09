@@ -178,3 +178,71 @@
     margin-top: 16px;
 }
 
+@media (max-width: 600px) {
+  .task-create-container {
+    max-width: 98vw;
+    margin: 10px auto;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .task-create-header h1 {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+  }
+  .task-create-header p {
+    font-size: 0.98rem;
+    margin-bottom: 16px;
+  }
+  .form-row, .form-group {
+    margin-bottom: 10px;
+  }
+  .form-group label {
+    font-size: 0.98rem;
+    margin-bottom: 3px;
+  }
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 13px;
+    padding: 7px;
+    border-radius: 4px;
+  }
+  .two-columns {
+    display: block;
+  }
+  .form-actions {
+    margin-top: 16px;
+  }
+  .cancel-btn, .submit-btn, .edit-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-right: 6px;
+    margin-top: 6px;
+  }
+  .conflict-versions {
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0 12px 0;
+    align-items: stretch;
+  }
+  .conflict-version {
+    min-width: 0;
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+  .conflict-version h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .conflict-version li {
+    font-size: 13px;
+  }
+  .conflict-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+}
+

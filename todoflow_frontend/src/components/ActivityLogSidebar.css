@@ -184,3 +184,46 @@
     margin: 0 2px 12px 2px;
   }
 } 
+
+@media (max-width: 600px) {
+  .activity-log-sidebar {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    height: auto;
+    border-left: none;
+    box-shadow: none;
+    border-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 0 2px;
+    order: 2;
+  }
+  .activity-log-sidebar h2 {
+    font-size: 1.1rem;
+    padding: 10px 6px 8px 6px;
+  }
+  .activity-log-header-divider {
+    margin: 0 8px 6px 8px;
+  }
+  .activity-log-content {
+    padding: 0 2px;
+    max-height: none;
+  }
+  .activity-log-table {
+    font-size: 12px;
+    margin: 0 2px 8px 2px;
+  }
+  .activity-log-table th, .activity-log-table td {
+    padding: 5px 4px;
+  }
+  .activity-log-table .type-badge {
+    font-size: 11px;
+    padding: 2px 7px;
+  }
+  .spinner {
+    width: 22px;
+    height: 22px;
+    margin-bottom: 6px;
+  }
+} 
