@@ -46,13 +46,40 @@ app.get('/ws-test', (req, res) => {
 const server = http.createServer(app);
 
 // Create WebSocket server attached to the HTTP server
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ 
+    server,
+    path: '/ws' // Add specific path for WebSocket connections
+});
 
-wss.on('connection', (ws) => {
-    console.log('New WebSocket client connected');
+// Handle WebSocket upgrade requests
+server.on('upgrade', (request, socket, head) => {
+    const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
     
-    ws.on('close', () => {
-        console.log('WebSocket client disconnected');
+    if (pathname === '/ws') {
+        wss.handleUpgrade(request, socket, head, (ws) => {
+            wss.emit('connection', ws, request);
+        });
+    } else {
+        socket.destroy();
+    }
+});
+
+wss.on('connection', (ws, req) => {
+    console.log('New WebSocket client connected from:', req.socket.remoteAddress);
+    
+    // Send a welcome message
+    ws.send(JSON.stringify({ 
+        type: 'CONNECTION_STATUS', 
+        message: 'Connected to TodoFlow WebSocket server',
+        timestamp: new Date().toISOString()
+    }));
+    
+    ws.on('close', (code, reason) => {
+        console.log('WebSocket client disconnected:', code, reason);
+    });
+    
+    ws.on('error', (error) => {
+        console.error('WebSocket error:', error);
     });
 });
 
