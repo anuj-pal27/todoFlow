@@ -16,23 +16,45 @@ const Dashboard = () => {
     const [ws, setWs] = useState(null);
 
     useEffect(() => {
-        const socket = new window.WebSocket(`${process.env.REACT_APP_WS_URL}`);
-        
-        socket.onopen = () => {
-            console.log('WebSocket connected');
+        const connectWebSocket = () => {
+            try {
+                const wsUrl = process.env.REACT_APP_WS_URL;
+                if (!wsUrl) {
+                    console.error('WebSocket URL not configured');
+                    return;
+                }
+                
+                const socket = new window.WebSocket(wsUrl);
+                
+                socket.onopen = () => {
+                    console.log('WebSocket connected successfully');
+                };
+                
+                socket.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+                
+                socket.onclose = (event) => {
+                    console.log('WebSocket disconnected:', event.code, event.reason);
+                    // Attempt to reconnect after 3 seconds
+                    setTimeout(() => {
+                        console.log('Attempting to reconnect...');
+                        connectWebSocket();
+                    }, 3000);
+                };
+                
+                setWs(socket);
+            } catch (error) {
+                console.error('Failed to create WebSocket connection:', error);
+            }
         };
         
-        socket.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
+        connectWebSocket();
         
-        socket.onclose = () => {
-            console.log('WebSocket disconnected');
-        };
-        
-        setWs(socket);
         return () => {
-            socket.close();
+            if (ws) {
+                ws.close();
+            }
         };
     }, []);
 
@@ -153,7 +175,19 @@ const Dashboard = () => {
             );
         } catch (error) {
             console.error('Error updating task:', error);
-            alert('Failed to update task. Please try again.');
+            if (error.response?.status === 409) {
+                // Version conflict - refresh the task data
+                alert('Task was modified by another user. Refreshing data...');
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, {
+                    headers: {
+                        'Authorization': token,
+                    }
+                });
+                setTasks(response.data);
+            } else {
+                alert('Failed to update task. Please try again.');
+            }
         }
     };
 

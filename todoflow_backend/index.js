@@ -6,6 +6,9 @@ const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const actionRoutes = require('./routes/actionRoutes');
 const dotenv = require('dotenv');
+const http = require('http');
+const WebSocket = require('ws');
+
 dotenv.config();
 
 connectDB();
@@ -21,10 +24,64 @@ app.use('/api/auth',authRoutes);
 app.use('/api/tasks',taskRoutes);
 app.use('/api/action',actionRoutes);
 
-app.listen(process.env.PORT,()=>{
-    console.log(`Server is running on port ${process.env.PORT}`);
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        message: 'Server is running',
+        timestamp: new Date().toISOString()
+    });
 });
 
-// Start WebSocket server
-require('./wsServer');
-console.log(`WebSocket server is running on port ${process.env.WS_PORT || 8080}`);
+// WebSocket test endpoint
+app.get('/ws-test', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        message: 'WebSocket server is available',
+        wsUrl: `wss://${req.get('host')}`
+    });
+});
+
+// Create HTTP server
+const server = http.createServer(app);
+
+// Create WebSocket server attached to the HTTP server
+const wss = new WebSocket.Server({ server });
+
+wss.on('connection', (ws) => {
+    console.log('New WebSocket client connected');
+    
+    ws.on('close', () => {
+        console.log('WebSocket client disconnected');
+    });
+});
+
+// Export WebSocket functions for use in other modules
+global.broadcastMessage = ({ type, task }) => {
+    try {
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ type, task }));
+            }
+        });
+    } catch (err) {
+        console.error('WebSocket broadcastMessage error:', err);
+    }
+};
+
+global.broadcastActionLog = (actionLog) => {
+    try {
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ type: 'ACTION_LOG', actionLog }));
+            }
+        });
+    } catch (err) {
+        console.error('WebSocket broadcastActionLog error:', err);
+    }
+};
+
+server.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+    console.log(`WebSocket server is running on the same port`);
+});

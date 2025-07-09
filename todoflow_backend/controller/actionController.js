@@ -1,5 +1,4 @@
 const ActionLog = require('../model/actionLog');
-const { broadcastActionLog } = require('../wsServer');
 
 const getActionLogs = async(req,res) =>{
     try{
