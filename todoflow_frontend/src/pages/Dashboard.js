@@ -19,6 +19,7 @@ const Dashboard = () => {
         const connectWebSocket = () => {
             try {
                 const wsUrl = process.env.REACT_APP_WS_URL;
+                console.log('Attempting to connect to WebSocket URL:', wsUrl);
                 if (!wsUrl) {
                     console.error('WebSocket URL not configured');
                     return;
